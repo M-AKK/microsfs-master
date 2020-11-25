@@ -22,7 +22,7 @@ spring:
     driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/microsfs?useUnicode=true&characterEncoding=utf8
     username: root
-    password: '001100'
+    password: 'Ailab@315'
     maxActive: 500
 
 mybatis:
