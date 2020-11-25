@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.wenz.service.fs.model.dao.DataNodeDao">
+
+    <resultMap id="NodeResultMap" type="net.wenz.service.fs.model.entity.DataNode">
+        <id column="id" jdbcType="VARCHAR" property="machineCode" />
+        <result column="ip" jdbcType="VARCHAR" property="ip" />
+        <result column="port" jdbcType="INTEGER" property="port" />
+        <result column="register_time" jdbcType="VARCHAR" property="registerTime" />
+        <result column="active_time" jdbcType="VARCHAR" property="activeTime" />
+    </resultMap>
+
+    <sql id="DataNode_Column_List">
+        id,
+        ip,
+        port,
+        register_time,
+        active_time
+    </sql>
+
+    <select id="getAllDataNode" resultMap="NodeResultMap">
+        SELECT
+            <include refid="DataNode_Column_List" />
+        FROM
+            tb_datanode
+    </select>
+
+    <select id="getDataNodeById" resultMap="NodeResultMap">
+        SELECT
+            <include refid="DataNode_Column_List" />
+        FROM
+            tb_datanode
+        WHERE
+            id = #{mcode}
+    </select>
+
+    <insert id="insertDataNode" parameterType="net.wenz.service.fs.model.entity.DataNode">
+        INSERT INTO
+            tb_datanode (id, ip, port, register_time, active_time)
+        VALUES
+            (#{machineCode},#{ip},#{port},#{registerTime},#{activeTime})
+    </insert>
+
+    <update id="updateAddress">
+        UPDATE tb_datanode SET
+            ip=#{ip}, port=#{port}
+        WHERE id=#{mcode}
+    </update>
+
+    <update id="updateActiveTime">
+        UPDATE tb_datanode SET
+            active_time=#{date}
+        WHERE id=#{mcode}
+    </update>
+
+    <delete id="removeDataNode">
+        DELETE FROM tb_datanode WHERE id=#{id}
+    </delete>
+
+</mapper>

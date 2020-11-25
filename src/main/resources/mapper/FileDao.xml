@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.wenz.service.fs.model.dao.FileDao">
+
+    <resultMap id="FileResultMap" type="net.wenz.service.fs.model.entity.FileEntity">
+        <id column="entity_id" jdbcType="VARCHAR" property="id" />
+        <result column="entity_name" jdbcType="VARCHAR" property="name" />
+        <result column="entity_alias" jdbcType="VARCHAR" property="alias" />
+        <result column="entity_own" jdbcType="VARCHAR" property="own" />
+        <result column="entity_group" jdbcType="VARCHAR" property="group" />
+        <result column="entity_type" jdbcType="INTEGER" javaType="net.wenz.service.fs.constant.FileType" property="fileType" />
+
+        <result column="entity_parent" jdbcType="VARCHAR" property="parentId" />
+
+        <result column="entity_createTime" jdbcType="VARCHAR" property="createTime" />
+        <result column="entity_modifyTime" jdbcType="VARCHAR" property="modifyTime" />
+
+        <collection property="blocks" ofType="net.wenz.service.fs.model.entity.FileBlock" column="fid">
+            <id column="block_id" jdbcType="VARCHAR" property="id" />
+            <result column="fid" jdbcType="VARCHAR" property="fileId" />
+            <result column="block_sequence" jdbcType="INTEGER" property="sequence" />
+            <result column="block_size" jdbcType="INTEGER" property="size" />
+
+            <collection property="duplicates" ofType="net.wenz.service.fs.model.entity.FileDuplicate" column="bid">
+                <id column="duplicate_id" jdbcType="VARCHAR" property="id" />
+                <result column="bid" jdbcType="VARCHAR" property="blockId" />
+                <association property="dataNode" column="machineCode" javaType="net.wenz.service.fs.model.entity.DataNode">
+                    <id column="node_id" jdbcType="VARCHAR" property="machineCode" />
+                    <result column="node_ip" jdbcType="VARCHAR" property="ip" />
+                    <result column="node_port" jdbcType="INTEGER" property="port" />
+                    <result column="node_registerTime" jdbcType="VARCHAR" property="registerTime" />
+                    <result column="node_activeTime" jdbcType="VARCHAR" property="activeTime" />
+                </association>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <sql id="Entity_Column_List">
+        tb_file_entity.uuid AS entity_id,
+        tb_file_entity.name AS entity_name,
+        tb_file_entity.alias AS entity_alias,
+        tb_file_entity.own AS entity_own,
+        tb_file_entity.group AS entity_group,
+        tb_file_entity.type AS entity_type,
+        tb_file_entity.parent AS entity_parent,
+        tb_file_entity.create_time AS entity_createTime,
+        tb_file_entity.modify_time AS entity_modifyTime
+    </sql>
+
+    <sql id="Block_Column_List">
+        tb_file_block.id AS block_id,
+        tb_file_block.fid,
+        tb_file_block.seq AS block_sequence,
+        tb_file_block.size AS block_size
+    </sql>
+
+    <sql id="Duplicate_Column_List">
+        tb_block_duplicate.id AS duplicate_id,
+        tb_block_duplicate.bid,
+        tb_block_duplicate.machineCode
+    </sql>
+
+    <sql id="DataNode_Column_List">
+        tb_datanode.id AS node_id,
+        tb_datanode.ip AS node_ip,
+        tb_datanode.port AS node_port,
+        tb_datanode.register_time AS node_registerTime,
+        tb_datanode.active_time AS node_activeTime
+    </sql>
+
+    <select id="getFilesInDirectory" resultMap="FileResultMap">
+        SELECT
+            <include refid="Entity_Column_List" />,
+            <include refid="Block_Column_List" />,
+            <include refid="Duplicate_Column_List" />,
+            <include refid="DataNode_Column_List" />
+        FROM
+            tb_file_entity
+        LEFT JOIN tb_file_block ON tb_file_entity.uuid = tb_file_block.fid
+        LEFT JOIN tb_block_duplicate ON tb_file_block.id = tb_block_duplicate.bid
+        LEFT JOIN tb_datanode ON tb_block_duplicate.machineCode = tb_datanode.id
+        WHERE
+            tb_file_entity.parent = #{parent}
+    </select>
+
+    <select id="getFileById" resultMap="FileResultMap">
+        SELECT
+            <include refid="Entity_Column_List" />,
+            <include refid="Block_Column_List" />,
+            <include refid="Duplicate_Column_List" />,
+            <include refid="DataNode_Column_List" />
+        FROM
+            tb_file_entity
+        LEFT JOIN tb_file_block ON tb_file_entity.uuid = tb_file_block.fid
+        LEFT JOIN tb_block_duplicate ON tb_file_block.id = tb_block_duplicate.bid
+        LEFT JOIN tb_datanode ON tb_block_duplicate.machineCode = tb_datanode.id
+        WHERE
+            tb_file_entity.uuid = #{id}
+    </select>
+
+    <insert id="insertFileEntity" parameterType="net.wenz.service.fs.model.entity.FileEntity">
+        INSERT INTO
+            tb_file_entity (uuid, `name`, alias, `own`, `group`, parent, `type`, create_time, modify_time)
+        VALUES
+            (#{id},#{name},#{alias},#{own},#{group},#{parentId},#{fileType},#{createTime},#{modifyTime})
+    </insert>
+
+    <insert id="insertFileBlock" parameterType="net.wenz.service.fs.model.entity.FileBlock">
+        INSERT INTO
+            tb_file_block (id, fid, seq, size)
+        VALUES
+            (#{id},#{fileId},#{sequence},#{size})
+    </insert>
+
+    <insert id="insertFileDuplicate" parameterType="net.wenz.service.fs.model.entity.FileDuplicate">
+        INSERT INTO
+            tb_block_duplicate (id, bid, machineCode)
+        VALUES
+            (#{id},#{blockId},#{dataNode.id})
+    </insert>
+
+    <!--<update id="updateDatabaseDesc">-->
+        <!--UPDATE tb_databases SET-->
+            <!--alias=#{alias}, description=#{desc}-->
+        <!--WHERE id=#{Id}-->
+    <!--</update>-->
+
+    <delete id="removeFileEntity">
+        DELETE FROM tb_file_entity WHERE uuid=#{id}
+    </delete>
+
+    <delete id="removeFileBlock">
+        DELETE FROM tb_file_block WHERE id=#{id}
+    </delete>
+
+    <delete id="removeFileDuplicate">
+        DELETE FROM tb_block_duplicate WHERE id=#{id}
+    </delete>
+
+    <update id="updateDuplicateMcode">
+        UPDATE tb_block_duplicate SET
+            machineCode=#{mcode}
+        WHERE id=#{id}
+    </update>
+
+</mapper>
