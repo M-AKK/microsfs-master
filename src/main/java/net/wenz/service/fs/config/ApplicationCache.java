@@ -1,6 +1,6 @@
 package net.wenz.service.fs.config;
 
-import org.springframework.beans.factory.InitializingBean;
+import net.wenz.service.fs.model.vo.FileTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;

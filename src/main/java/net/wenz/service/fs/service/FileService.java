@@ -16,4 +16,6 @@ public interface FileService {
 
     List<BlockInfo> put(String path, long size);
     void ackput(String path, String bid, String id, String mcode);
+
+    FileTreeNode get(String path);
 }

@@ -1,17 +1,11 @@
 package net.wenz.service.fs.service.impl;
 
-import net.wenz.service.fs.config.ApplicationCache;
-import net.wenz.service.fs.config.FileTree;
 import net.wenz.service.fs.model.dao.DataNodeDao;
 import net.wenz.service.fs.model.entity.DataNode;
-import net.wenz.service.fs.model.vo.FileTreeNode;
-import net.wenz.service.fs.service.FileService;
 import net.wenz.service.fs.service.NodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.soap.Node;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 

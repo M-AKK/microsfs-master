@@ -1,7 +1,10 @@
 package net.wenz.service.fs.service.impl;
 
 import net.wenz.service.fs.config.ApplicationCache;
-import net.wenz.service.fs.config.FileTree;
+import net.wenz.service.fs.exception.DirectoryDontEmptyException;
+import net.wenz.service.fs.exception.FileTreeNodeNullException;
+import net.wenz.service.fs.exception.PathException;
+import net.wenz.service.fs.model.vo.FileTree;
 import net.wenz.service.fs.model.dao.DataNodeDao;
 import net.wenz.service.fs.model.dao.FileDao;
 import net.wenz.service.fs.model.entity.DataNode;
@@ -37,26 +40,54 @@ public class FileServiceImpl implements FileService {
     @Override
     public void mkdir(String path, String name) {
         FileTree fs = applicationCache.getFileTree();
-        fs.addDirectory(path);
+        try {
+            fs.addDirectory(path);
+        } catch (FileTreeNodeNullException e) {
+            e.printStackTrace();
+        } catch (PathException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void rmdir(String path) {
         FileTree fs = applicationCache.getFileTree();
-        fs.removeDirectory(path);
+        try {
+            fs.removeDirectory(path);
+        } catch (FileTreeNodeNullException e) {
+            e.printStackTrace();
+        } catch (PathException e) {
+            e.printStackTrace();
+        } catch (DirectoryDontEmptyException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public Collection<FileTreeNode> ls(String path) {
         FileTree fs = applicationCache.getFileTree();
-        FileTreeNode node = fs.getFile(path);
-        return node.getAllChildNodes();
+        Collection<FileTreeNode> nodes = null;
+        try {
+            nodes = fs.listDirectory(path);
+        } catch (PathException e) {
+            e.printStackTrace();
+        } catch (FileTreeNodeNullException e) {
+            e.printStackTrace();
+        }
+        return nodes;
     }
 
     @Override
     public List<BlockInfo> put(String path, long size) {
         FileTree fs = applicationCache.getFileTree();
-        String fid = fs.addFile(path);
+        String fid = null;
+        try {
+            fid = fs.addFile(path);
+        } catch (FileTreeNodeNullException e) {
+            e.printStackTrace();
+        } catch (PathException e) {
+            e.printStackTrace();
+        }
 
         long num = size / blockSzie + 1;
         List<BlockInfo> ret = new ArrayList<BlockInfo>();
@@ -104,7 +135,14 @@ public class FileServiceImpl implements FileService {
         fileDao.updateDuplicateMcode(id, mcode);
 
         FileTree fs = applicationCache.getFileTree();
-        FileTreeNode node = fs.getFile(path);
+        FileTreeNode node = null;
+        try {
+            node = fs.getFilerOrDirectory(path);
+        } catch (PathException e) {
+            e.printStackTrace();
+        } catch (FileTreeNodeNullException e) {
+            e.printStackTrace();
+        }
         List<FileBlock> blocks = node.getFileEntity().getBlocks();
         for (FileBlock b : blocks) {
             if (b.getId().equals(bid)) {
@@ -117,5 +155,19 @@ public class FileServiceImpl implements FileService {
                 }
             }
         }
+    }
+
+    @Override
+    public FileTreeNode get(String path) {
+        FileTree fs = applicationCache.getFileTree();
+        FileTreeNode node = null;
+        try {
+            node = fs.getFilerOrDirectory(path);
+        } catch (PathException e) {
+            e.printStackTrace();
+        } catch (FileTreeNodeNullException e) {
+            e.printStackTrace();
+        }
+        return node;
     }
 }

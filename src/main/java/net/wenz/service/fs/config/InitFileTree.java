@@ -1,5 +1,6 @@
 package net.wenz.service.fs.config;
 
+import net.wenz.service.fs.exception.PathException;
 import net.wenz.service.fs.model.dao.FileDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -17,6 +18,10 @@ public class InitFileTree implements ApplicationListener<ContextRefreshedEvent> 
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        applicationCache.getFileTree().initFileTree();
+        try {
+            applicationCache.getFileTree().initFileTree();
+        } catch (PathException e) {
+            e.printStackTrace();
+        }
     }
 }
