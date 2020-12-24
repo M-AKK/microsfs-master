@@ -14,6 +14,8 @@ import java.util.List;
 public interface FileDao {
     List<FileEntity> getFilesInDirectory(@Param("parent") String parent);
     FileEntity getFileById(@Param("id") String id);
+    FileBlock getBlockByFid(@Param("fid") String fid);
+    FileBlock getBlockById(@Param("id") String id);
 
     int insertFileEntity(FileEntity fileEntity);
     int insertFileBlock(FileBlock fileBlock);

@@ -5,7 +5,7 @@ import net.wenz.service.fs.model.entity.DataNode;
 public class BlockInfo {
     private String id;
     private String bid;
-    private int seq;
+    private long seq;
     private long size;
     private String path;
     private DataNode dataNode;
@@ -26,11 +26,11 @@ public class BlockInfo {
         this.bid = bid;
     }
 
-    public int getSeq() {
+    public long getSeq() {
         return seq;
     }
 
-    public void setSeq(int seq) {
+    public void setSeq(long seq) {
         this.seq = seq;
     }
 

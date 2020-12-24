@@ -15,4 +15,12 @@ public class DuplicateServiceImpl implements DuplicateService {
         FileDuplicate fileDuplicate = duplicateDao.getFileDuplicateByBid(bid);
         return fileDuplicate;
     }
+
+    @Override
+    public FileDuplicate getFileDuplicateByMachineCode(String machinecode) {
+        FileDuplicate fileDuplicate = duplicateDao.getFileDuplicateByMachineCode(machinecode);
+        return fileDuplicate;
+    }
+
+
 }

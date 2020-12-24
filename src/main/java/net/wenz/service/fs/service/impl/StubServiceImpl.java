@@ -5,6 +5,7 @@ import net.wenz.service.fs.exception.DirectoryDontEmptyException;
 import net.wenz.service.fs.exception.FileTreeNodeNullException;
 import net.wenz.service.fs.exception.PathException;
 import net.wenz.service.fs.model.dao.DataNodeDao;
+import net.wenz.service.fs.model.dao.DuplicateDao;
 import net.wenz.service.fs.model.dao.FileDao;
 import net.wenz.service.fs.model.entity.DataNode;
 import net.wenz.service.fs.model.entity.FileBlock;
@@ -37,16 +38,25 @@ public class StubServiceImpl implements StubService {
     @Value("${blockSzie}")
     private long blockSzie;
 
+    @Autowired
+    DuplicateDao duplicateDao;
+
+    @Autowired
+    DataNodeDao dataNodeDao;
+
+    @Autowired
+    FileDao fileDao;
+
     @Override
     public boolean put(String path, File file) throws IOException {
 
-        List<BlockInfo> list = fileService.put(path, file.length());
+        List<BlockInfo> list = fileService.put(path, file.length());//文件存储在node节点上，返回node的列表
         List<File> flist = FileUtil.splitFile(file, blockSzie);
         if (list.size() != flist.size())
             return false;
 
         for (int i=0; i<list.size(); i++) {
-
+            //1.上传出错记录删除
             BlockInfo _blockinfo = list.get(i);
             File _blockfile = flist.get(i);
 
@@ -129,5 +139,21 @@ public class StubServiceImpl implements StubService {
         }
         File ret = FileUtil.mergeFiles(blocks);
         return ret;
+    }
+
+    //删除
+    @Override
+    public void delete(String uuid) throws IOException {
+        //1.通过uuid找到tb_file_block里面的条目
+        FileBlock fileBlock = fileService.getBlock(uuid);
+        //2.根据fid寻找duplicate里的内容bid
+        FileDuplicate fileDuplicate = duplicateDao.getFileDuplicateByBid(fileBlock.getFileId());
+        //3.根据machinecode获取datanode里的内容
+        DataNode dataNode = dataNodeDao.getDataNodeById(fileDuplicate.getDataNode().getMachineCode());
+        //然后反向删除，先删除datanode
+        dataNodeDao.removeDataNode(dataNode.getMachineCode());
+        duplicateDao.removeDuplicate(fileDuplicate.getId());
+        fileDao.removeFileBlock(fileBlock.getId());
+        fileDao.removeFileEntity(uuid);
     }
 }

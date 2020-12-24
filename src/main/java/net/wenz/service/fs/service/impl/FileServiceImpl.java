@@ -64,6 +64,18 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    public FileBlock getBlock(String fid) {
+        FileBlock fileBlock = fileDao.getBlockByFid(fid);
+        return fileBlock;
+    }
+
+    @Override
+    public FileBlock getBlockById(String id) {
+        FileBlock fileBlock = fileDao.getBlockById(id);
+        return fileBlock;
+    }
+
+    @Override
     public Collection<FileTreeNode> ls(String path) {
         FileTree fs = applicationCache.getFileTree();
         Collection<FileTreeNode> nodes = null;

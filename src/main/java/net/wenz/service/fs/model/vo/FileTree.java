@@ -31,13 +31,13 @@ public class FileTree {
         // init file path cache
         filePathCache = new HashMap<String, FileTreeNode>();
 
-        // init root node
+        // init root node 设置根节点
         FileEntity entity = fileDao.getFileById(Constant.ROOT_UUID);
         FileTreeNode root = new FileTreeNode(entity);
         this.rootNode = root;
         this.filePathCache.put(Constant.FILE_ROOT, root);
 
-        // init 1st layer nodes
+        // init 1st layer nodes 初始化子节点
         List<FileEntity> children = fileDao.getFilesInDirectory(entity.getId());
         for (FileEntity ent : children) {
             FileTreeNode child = new FileTreeNode(ent, root);
@@ -133,7 +133,7 @@ public class FileTree {
        desc: list directory,
      */
     public Collection<FileTreeNode> listDirectory(String path) throws PathException, FileTreeNodeNullException {
-        path = this._normalPath(path);
+        path = this._normalPath(path);//调整下格式
 
         // get file node from cache or db
         FileTreeNode fnode = null;
@@ -152,7 +152,6 @@ public class FileTree {
                 this.filePathCache.put(path + Constant.FILE_SEPARATE + ent.getAlias(), child);
             }
         }
-
         return fnode.getAllChildNodes();
     }
 

@@ -79,6 +79,7 @@ public class FileController {
         return JsonUtil.toJson(ret);
     }
 
+    //返回所有节点和信息
     @RequestMapping(value = "/get", method = {RequestMethod.GET})
     @ResponseBody
     public String get(@RequestParam("path") String path) {

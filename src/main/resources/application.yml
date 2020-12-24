@@ -22,8 +22,9 @@ spring:
     driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/microsfs?useUnicode=true&characterEncoding=utf8
     username: root
-    password: Ailab@315
+    password: 6881385mysql
     maxActive: 500
+    #Ailab@315
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径

@@ -7,6 +7,7 @@ import java.util.Date;
 public class FileDuplicate {
     private String id;
     private String blockId;
+    private String machinecode;
 
     private DataNode dataNode;
 
@@ -32,5 +33,13 @@ public class FileDuplicate {
 
     public void setDataNode(DataNode dataNode) {
         this.dataNode = dataNode;
+    }
+
+    public String getMachinecode() {
+        return machinecode;
+    }
+
+    public void setMachinecode(String machinecode) {
+        this.machinecode = machinecode;
     }
 }

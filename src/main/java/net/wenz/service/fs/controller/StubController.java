@@ -61,4 +61,21 @@ public class StubController {
         return ResponseEntity.ok().headers(headers).contentLength(file.length()).contentType(MediaType.parseMediaType("application/octet-stream")).body(new FileSystemResource(file));
     }
 
+    //增加删除功能
+    @RequestMapping(value = "/delete", method = {RequestMethod.GET})
+    @ResponseBody
+    public String delete(@RequestParam("id") String uuid) throws IOException {
+
+        //根据传回来的文件名(路径)或者uuid来确定删除对象
+        /**删除步骤：1.根据关键词查找旗下子节点，一一删除
+                   2.根据
+                    先是tb_file_entity表和tb_block表对应，block表再和dup表对应，dup表和node对应
+                */
+        stubService.delete(uuid);
+        //删除成功返回提示语句
+        Map<String, Object> ret = new HashMap<>();
+        ret.put("ret", "success");
+        return JsonUtil.toJson(ret);
+    }
+
 }

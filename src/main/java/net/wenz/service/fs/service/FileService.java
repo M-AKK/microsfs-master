@@ -11,6 +11,8 @@ import java.util.List;
 public interface FileService {
     void mkdir(String path, String name) ;
     void rmdir(String path) ;
+    FileBlock getBlock(String fid);
+    FileBlock getBlockById(String id);
 
     Collection<FileTreeNode> ls(String path) ;
 

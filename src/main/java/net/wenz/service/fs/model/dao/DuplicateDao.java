@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface DuplicateDao {
     FileDuplicate getFileDuplicateByBid(@Param("bid") String bid);
     void removeDuplicate(@Param("id") String id);
+    FileDuplicate getFileDuplicateByMachineCode(@Param("machinecode") String machinecode);
 }
