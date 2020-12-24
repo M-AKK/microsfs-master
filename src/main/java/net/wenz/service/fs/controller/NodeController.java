@@ -22,7 +22,7 @@ import java.util.*;
 
 @CrossOrigin
 @Controller
-@RequestMapping(value = "api/node")
+@RequestMapping(value = "node")
 public class NodeController {
 
     @Autowired

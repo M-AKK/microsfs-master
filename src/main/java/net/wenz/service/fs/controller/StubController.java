@@ -44,11 +44,9 @@ public class StubController {
         return JsonUtil.toJson(ret);
     }
 
-
     @RequestMapping(value = "/get", method = {RequestMethod.GET})
     @ResponseBody
     public ResponseEntity<FileSystemResource> get(@RequestParam("path") String path) throws IOException {
-
         File file = stubService.get(path);
 
         HttpHeaders headers = new HttpHeaders();

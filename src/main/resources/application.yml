@@ -25,6 +25,7 @@ spring:
     password: Ailab@315
     maxActive: 500
     #Ailab@315
+    #6881385mysql
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
