@@ -9,6 +9,7 @@ public class FileEntity {
     private String id;
     private String name;
     private String alias;
+    private String path;
 
     private Date createTime;
     private Date modifyTime;
@@ -98,5 +99,13 @@ public class FileEntity {
 
     public void setBlocks(List<FileBlock> blocks) {
         this.blocks = blocks;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

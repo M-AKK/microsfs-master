@@ -46,16 +46,28 @@ public class FileController {
         return JsonUtil.toJson(ret);
     }
 
+    //文件目录树
     @RequestMapping(value = "/ls", method = {RequestMethod.GET})
     @ResponseBody
     public String ls(@RequestParam("path") String path) {
+        //使用FileTreeNode来装最后的数据，其中又path
+        //List<FileTreeNode> nodes = new ArrayList<FileTreeNode>();
         List<FileEntity> nodes = new ArrayList<FileEntity>();
         for (FileTreeNode child : fileService.ls(path)) {
-            nodes.add(child.getFileEntity());
+            //child.setPath("/"+child.getFileEntity().getName());
+            FileEntity fileEntity = child.getFileEntity();
+            if(fileEntity.getParentId().equals("00000000000000001111111100000000")){
+                fileEntity.setPath("/"+fileEntity.getName());
+            }else{
+                fileEntity.setPath("/"+"wenz/"+fileEntity.getName());
+            }
+
+            nodes.add(fileEntity);
         }
+
         Map<String, Object> ret = new HashMap<>();
         ret.put("ret", "success");
-        ret.put("list", nodes);
+        ret.put("data", nodes);
         return JsonUtil.toJson(ret);
     }
 

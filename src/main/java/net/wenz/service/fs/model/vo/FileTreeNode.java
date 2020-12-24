@@ -11,6 +11,9 @@ public class FileTreeNode {
     private FileEntity fileEntity;
     private FileTreeNode parentNode;
 
+
+
+    private String path;
     private Map<String, FileTreeNode> childrenNodes;
 
     public FileTreeNode(FileEntity fileEntity, FileTreeNode parentNode) {
@@ -75,5 +78,13 @@ public class FileTreeNode {
         if (ppath == null)
             throw new PathException(String.format("File path '%s' is error", ppath));
         return ppath + Constant.FILE_SEPARATE + this.fileEntity.getName();
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }
