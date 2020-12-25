@@ -30,7 +30,7 @@ public class FileController {
 
     @RequestMapping(value = "/mkdir", method = {RequestMethod.POST})
     @ResponseBody
-    public String mkdir(@RequestParam("path") String path, @RequestParam("name") String name) {
+    public String mkdir(String path,String name) {
         fileService.mkdir(path, name);
         Map<String, Object> ret = new HashMap<>();
         ret.put("ret", "success");

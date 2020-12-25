@@ -162,6 +162,7 @@ public class FileTree {
      */
     public void addDirectory(String path,String name) throws FileTreeNodeNullException, PathException {
         String path0 = path+"/"+name;
+        //System.out.println("测试="+path0);
         path = this._normalPath(path0);
 
         String[] _path = this._splitePathName(path);
