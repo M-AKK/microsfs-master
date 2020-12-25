@@ -11,8 +11,6 @@ public class FileTreeNode {
     private FileEntity fileEntity;
     private FileTreeNode parentNode;
 
-
-
     private String path;
     private Map<String, FileTreeNode> childrenNodes;
 

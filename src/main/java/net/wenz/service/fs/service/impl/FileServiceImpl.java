@@ -4,6 +4,7 @@ import net.wenz.service.fs.config.ApplicationCache;
 import net.wenz.service.fs.exception.DirectoryDontEmptyException;
 import net.wenz.service.fs.exception.FileTreeNodeNullException;
 import net.wenz.service.fs.exception.PathException;
+import net.wenz.service.fs.model.entity.FileEntity;
 import net.wenz.service.fs.model.vo.FileTree;
 import net.wenz.service.fs.model.dao.DataNodeDao;
 import net.wenz.service.fs.model.dao.FileDao;
@@ -73,6 +74,12 @@ public class FileServiceImpl implements FileService {
     public FileBlock getBlockById(String id) {
         FileBlock fileBlock = fileDao.getBlockById(id);
         return fileBlock;
+    }
+
+    @Override
+    public FileEntity getFileById(String id) {
+        FileEntity fileEntity = fileDao.getFileById(id);
+        return fileEntity;
     }
 
     @Override

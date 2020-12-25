@@ -64,7 +64,11 @@ public class NodeController {
             blockInfo.setDataNode(dataNode);
             blockInfoList.add(blockInfo);
         }
-        return JsonUtil.toJson(blockInfoList);
+
+        Map<String, Object> ret = new HashMap<>();
+        ret.put("ret", "success");
+        ret.put("data", blockInfoList);
+        return JsonUtil.toJson(ret);
     }
 
     @RequestMapping(value = "/get", method = {RequestMethod.GET})
