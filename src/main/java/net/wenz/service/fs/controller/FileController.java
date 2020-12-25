@@ -99,11 +99,16 @@ public class FileController {
     public String get(@RequestParam("path") String path) {
         List<FileEntity> nodes = new ArrayList<FileEntity>();
         for (FileTreeNode child : fileService.ls(path)) {
-            nodes.add(child.getFileEntity());
+            FileEntity fileEntity = child.getFileEntity();
+            fileEntity.setPermissions("xwr--r---");
+            fileEntity.setSize("1000");
+            fileEntity.setOwn("root");
+            fileEntity.setGroup("root");
+            nodes.add(fileEntity);
         }
         Map<String, Object> ret = new HashMap<>();
         ret.put("ret", "success");
-        ret.put("list", nodes);
+        ret.put("data", nodes);
         return JsonUtil.toJson(ret);
     }
 }

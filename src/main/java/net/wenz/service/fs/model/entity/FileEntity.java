@@ -14,6 +14,11 @@ public class FileEntity {
     private Date createTime;
     private Date modifyTime;
 
+
+
+    private String permissions;
+    private String size;
+
     private String parentId;
     private String own;
     private String group;
@@ -107,5 +112,21 @@ public class FileEntity {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(String permissions) {
+        this.permissions = permissions;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 }
