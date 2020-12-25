@@ -62,6 +62,11 @@ public class NodeController {
             blockInfo.setSeq(1);
             blockInfo.setSize(1000);
             blockInfo.setDataNode(dataNode);
+            blockInfo.setMachineCode(dataNode.getMachineCode());
+            blockInfo.setIp(dataNode.getIp());
+            blockInfo.setPort(dataNode.getPort());
+            blockInfo.setRegisterTime(dataNode.getRegisterTime());
+            blockInfo.setActiveTime(dataNode.getActiveTime());
             blockInfoList.add(blockInfo);
         }
 
