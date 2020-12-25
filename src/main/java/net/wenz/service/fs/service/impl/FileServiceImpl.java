@@ -42,7 +42,7 @@ public class FileServiceImpl implements FileService {
     public void mkdir(String path, String name) {
         FileTree fs = applicationCache.getFileTree();
         try {
-            fs.addDirectory(path);
+            fs.addDirectory(path,name);
         } catch (FileTreeNodeNullException e) {
             e.printStackTrace();
         } catch (PathException e) {

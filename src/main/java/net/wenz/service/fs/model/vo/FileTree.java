@@ -160,8 +160,9 @@ public class FileTree {
        auth: caowenzhi
        desc: Add Directory to file tree
      */
-    public void addDirectory(String path) throws FileTreeNodeNullException, PathException {
-        path = this._normalPath(path);
+    public void addDirectory(String path,String name) throws FileTreeNodeNullException, PathException {
+        String path0 = path+"/"+name;
+        path = this._normalPath(path0);
 
         String[] _path = this._splitePathName(path);
         // get parent node
