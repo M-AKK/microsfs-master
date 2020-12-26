@@ -12,6 +12,10 @@ logging:
     net.wenz.service.fs: DEBUG
 
 spring:
+  profiles.active: aeolian
+  ## MULTIPART (MultipartProperties)
+  # 开启 multipart 上传功能
+  servlet.multipart.enabled: true
   devtools:
     livereload:
       enabled: true #是否支持livereload
@@ -22,7 +26,7 @@ spring:
     driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/microsfs?useUnicode=true&characterEncoding=utf8
     username: root
-    password: 6881385mysql
+    password: Ailab@315
     maxActive: 500
     #Ailab@315
     #6881385mysql

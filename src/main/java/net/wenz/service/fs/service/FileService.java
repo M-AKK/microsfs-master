@@ -19,7 +19,7 @@ public interface FileService {
 
     Collection<FileTreeNode> ls(String path) ;
 
-    List<BlockInfo> put(String path, long size);
+    List<BlockInfo> put(String path, String name, long size);
     void ackput(String path, String bid, String id, String mcode);
 
     FileTreeNode get(String path);

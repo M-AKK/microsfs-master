@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 public interface StubService {
-    boolean put(String path, File file) throws IOException;
+    boolean put(String path, String name, File file) throws IOException;
     File get(String path) throws IOException;
     void delete(String uuid) throws IOException;
 }

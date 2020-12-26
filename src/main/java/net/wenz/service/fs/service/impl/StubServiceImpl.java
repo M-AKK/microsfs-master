@@ -48,9 +48,9 @@ public class StubServiceImpl implements StubService {
     FileDao fileDao;
 
     @Override
-    public boolean put(String path, File file) throws IOException {
+    public boolean put(String path, String name, File file) throws IOException {
 
-        List<BlockInfo> list = fileService.put(path, file.length());//文件存储在node节点上，返回node的列表
+        List<BlockInfo> list = fileService.put(path, name, file.length());//文件存储在node节点上，返回node的列表
         List<File> flist = FileUtil.splitFile(file, blockSzie);
         if (list.size() != flist.size())
             return false;
@@ -83,7 +83,6 @@ public class StubServiceImpl implements StubService {
 
             fileService.ackput(path, _blockinfo.getBid(), _blockinfo.getId(), _blockinfo.getDataNode().getMachineCode());
         }
-
         return true;
     }
 

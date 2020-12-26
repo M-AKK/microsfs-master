@@ -75,8 +75,8 @@ public class FileController {
 
     @RequestMapping(value = "/put", method = {RequestMethod.POST})
     @ResponseBody
-    public String put(@RequestParam("path") String path, @RequestParam("size") long size) {
-        List<BlockInfo> list = fileService.put(path, size);
+    public String put(@RequestParam("path") String path,@RequestParam("path") String name,  @RequestParam("size") long size) {
+        List<BlockInfo> list = fileService.put(path,name, size);
         Map<String, Object> ret = new HashMap<>();
         ret.put("ret", "success");
         ret.put("list", list);

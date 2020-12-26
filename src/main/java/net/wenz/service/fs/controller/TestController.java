@@ -42,7 +42,7 @@ public class TestController {
         object.put("notifyCount",12);
         object.put("unreadCount",11);
         object.put("country","China");
-        object.put("access","getAccess()");
+        object.put("access","admin");
 
         HashMap<String , Map<String,String>> tags1 = new HashMap<String , Map<String,String>>();
         Map<String, String> ret1 = new HashMap<>();

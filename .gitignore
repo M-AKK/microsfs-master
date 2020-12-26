@@ -3,4 +3,4 @@
 .env
 target
 nohup.out
-application.yml
+*.yml

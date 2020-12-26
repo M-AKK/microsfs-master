@@ -97,11 +97,11 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public List<BlockInfo> put(String path, long size) {
+    public List<BlockInfo> put(String path, String name, long size) {
         FileTree fs = applicationCache.getFileTree();
         String fid = null;
         try {
-            fid = fs.addFile(path);
+            fid = fs.addFile(path,name);
         } catch (FileTreeNodeNullException e) {
             e.printStackTrace();
         } catch (PathException e) {

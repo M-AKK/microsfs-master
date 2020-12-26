@@ -10,6 +10,7 @@ import net.wenz.service.fs.model.entity.FileEntity;
 import net.wenz.service.fs.exception.PathException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
@@ -160,9 +161,9 @@ public class FileTree {
        auth: caowenzhi
        desc: Add Directory to file tree
      */
-    public void addDirectory(String path,String name) throws FileTreeNodeNullException, PathException {
+    public void addDirectory(String path, String name) throws FileTreeNodeNullException, PathException {
         String path0 = path+"/"+name;
-        //System.out.println("测试="+path0);
+        System.out.println("测试="+path0);
         path = this._normalPath(path0);
 
         String[] _path = this._splitePathName(path);
@@ -191,7 +192,7 @@ public class FileTree {
       auth: caowenzhi
       desc: Add File to file tree
     */
-    public String addFile(String path) throws FileTreeNodeNullException, PathException {
+    public String addFile(String path,String name) throws FileTreeNodeNullException, PathException {
         if (path.endsWith(Constant.FILE_SEPARATE))
             throw new PathException(String.format("File path donot should end with '%s'", Constant.FILE_SEPARATE));
 
@@ -202,7 +203,7 @@ public class FileTree {
         // create file entity
         FileEntity ent = new FileEntity();
         ent.setId(UUID.randomUUID().toString().replaceAll("-", ""));
-        ent.setName(_path[1]);
+        ent.setName(name);
         ent.setAlias(_path[1]);
         ent.setFileType(FileType.FILE);
         ent.setParentId(parent.getFileEntity().getId());

@@ -31,13 +31,13 @@ public class StubController {
 
     @RequestMapping(value = "/put", method = {RequestMethod.POST})
     @ResponseBody
-    public String put(@RequestParam("path") String path, @RequestParam("file") MultipartFile file) throws
+    public String put(@RequestParam("path") String path, @RequestParam("name") String name,@RequestParam("file") MultipartFile file) throws
             IOException {
 
         File dest = File.createTempFile("upload-", ".tmp");//新生成文件的路径
         file.transferTo(dest);
 
-        stubService.put(path, dest);
+        stubService.put(path, name, dest);
 
         Map<String, Object> ret = new HashMap<>();
         ret.put("ret", "success");
