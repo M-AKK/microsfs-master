@@ -144,8 +144,11 @@ public class FileTree {
             fnode = this.getFilerOrDirectory(path);
 
         //#TODO campare size and children num
+        System.out.println("估计是根目录的id："+fnode.getFileEntity().getId());
         List<FileEntity> children = fileDao.getFilesInDirectory(fnode.getFileEntity().getId());
+
         for (FileEntity ent : children) {
+            System.out.println(ent.getAlias());
             if (!fnode.hasChildNode(ent.getAlias())) {
                 FileTreeNode child = new FileTreeNode(ent, fnode);
                 fnode.putChildNode(child);

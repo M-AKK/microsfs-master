@@ -78,8 +78,8 @@ public class StubServiceImpl implements StubService {
             //用HttpEntity封装整个请求报文
             HttpEntity<MultiValueMap<String, Object>> files = new HttpEntity<>(form, headers);
 
-            String s = restTemplate.postForObject(url, files, String.class);
-            System.out.println(s);
+            //String s = restTemplate.postForObject(url, files, String.class);
+            //System.out.println(s);
 
             fileService.ackput(path, _blockinfo.getBid(), _blockinfo.getId(), _blockinfo.getDataNode().getMachineCode());
         }

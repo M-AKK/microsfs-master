@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -43,6 +44,23 @@ public class StubController {
         ret.put("ret", "success");
         return JsonUtil.toJson(ret);
     }
+
+
+//    @RequestMapping(value = "/put", method = {RequestMethod.POST})
+//    @ResponseBody
+//    public String put(HttpServletRequest request) throws
+//            IOException {
+//
+//        Map map  = request.getParameterMap();
+//        File dest = File.createTempFile("upload-", ".tmp");//新生成文件的路径
+////        file.transferTo(dest);
+////
+////        stubService.put(path, name, dest);
+//
+//        Map<String, Object> ret = new HashMap<>();
+//        ret.put("ret", "success");
+//        return JsonUtil.toJson(ret);
+//    }
 
     @RequestMapping(value = "/get", method = {RequestMethod.GET})
     @ResponseBody

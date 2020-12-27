@@ -63,7 +63,6 @@ public class FileController {
                 FileEntity fileEntity1 = fileService.getFileById(fileEntity.getParentId());
                 fileEntity.setPath("/"+fileEntity1.getName()+"/"+fileEntity.getName());
             }
-
             nodes.add(fileEntity);
         }
 
