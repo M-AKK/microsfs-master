@@ -65,7 +65,6 @@ public class FileController {
                 if(fileEntity.getParentId().equals("00000000000000001111111100000000")){
                     fileEntity.setPath("/"+fileEntity.getName());
                 }else{//这种是有多级目录的情况
-
                     //根据parentid查找上一级的id
                     FileEntity fileEntity1 = fileService.getFileById(fileEntity.getParentId());
                     System.out.println("这种是有多级目录的情况"+fileEntity1.getName());
@@ -117,6 +116,14 @@ public class FileController {
             for (FileTreeNode child : fileService.ls(path)) {
                 FileEntity fileEntity = child.getFileEntity();
                 fileEntity.setPermissions("xwr--r---");
+
+                if(fileEntity.getParentId().equals("00000000000000001111111100000000")){
+                    fileEntity.setPath("/"+fileEntity.getName());
+                }else{//这种是有多级目录的情况
+                    //根据parentid查找上一级的id
+                    FileEntity fileEntity1 = fileService.getFileById(fileEntity.getParentId());
+                    fileEntity.setPath("/"+fileEntity1.getName()+"/"+fileEntity.getName());
+                }
                 fileEntity.setSize("1000");
                 fileEntity.setOwn("root");
                 fileEntity.setGroup("root");
