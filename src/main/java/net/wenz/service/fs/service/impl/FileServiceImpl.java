@@ -88,7 +88,7 @@ public class FileServiceImpl implements FileService {
         Collection<FileTreeNode> nodes = null;
         try {
             nodes = fs.listDirectory(path);
-            System.out.println("返回的子节点的个数="+nodes.size());
+            //System.out.println("返回的子节点的个数="+nodes.size());
         } catch (PathException e) {
             e.printStackTrace();
         } catch (FileTreeNodeNullException e) {
@@ -96,6 +96,7 @@ public class FileServiceImpl implements FileService {
         }
         return nodes;
     }
+
 
     @Override
     public List<BlockInfo> put(String path, String name, long size) {

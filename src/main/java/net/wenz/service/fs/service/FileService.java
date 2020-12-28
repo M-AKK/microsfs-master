@@ -18,7 +18,6 @@ public interface FileService {
     FileEntity getFileById(String id);
 
     Collection<FileTreeNode> ls(String path) ;
-
     List<BlockInfo> put(String path, String name, long size);
     void ackput(String path, String bid, String id, String mcode);
 

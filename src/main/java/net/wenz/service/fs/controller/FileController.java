@@ -53,17 +53,28 @@ public class FileController {
         //使用FileTreeNode来装最后的数据，其中又path
         //List<FileTreeNode> nodes = new ArrayList<FileTreeNode>();
         List<FileEntity> nodes = new ArrayList<FileEntity>();
-        for (FileTreeNode child : fileService.ls(path)) {
-            //child.setPath("/"+child.getFileEntity().getName());
-            FileEntity fileEntity = child.getFileEntity();
-            if(fileEntity.getParentId().equals("00000000000000001111111100000000")){
-                fileEntity.setPath("/"+fileEntity.getName());
-            }else{//这种是有多级目录的情况
-                //根据parentid查找上一级的id
-                FileEntity fileEntity1 = fileService.getFileById(fileEntity.getParentId());
-                fileEntity.setPath("/"+fileEntity1.getName()+"/"+fileEntity.getName());
+        if(fileService.ls(path) == null){
+            Map<String, Object> ret = new HashMap<>();
+            ret.put("ret", "success");
+            ret.put("data", nodes);
+            return JsonUtil.toJson(ret);
+        }else {
+            for (FileTreeNode child : fileService.ls(path)) {
+                //child.setPath("/"+child.getFileEntity().getName());
+                FileEntity fileEntity = child.getFileEntity();
+                if(fileEntity.getParentId().equals("00000000000000001111111100000000")){
+                    fileEntity.setPath("/"+fileEntity.getName());
+                }else{//这种是有多级目录的情况
+
+                    //根据parentid查找上一级的id
+                    FileEntity fileEntity1 = fileService.getFileById(fileEntity.getParentId());
+                    System.out.println("这种是有多级目录的情况"+fileEntity1.getName());
+                    fileEntity.setPath("/"+fileEntity1.getName()+"/"+fileEntity.getName());
+                }
+                if(fileEntity.getFileType().getValue()==2){
+                    nodes.add(fileEntity);
+                }
             }
-            nodes.add(fileEntity);
         }
 
         Map<String, Object> ret = new HashMap<>();
@@ -97,14 +108,24 @@ public class FileController {
     @ResponseBody
     public String get(@RequestParam("path") String path) {
         List<FileEntity> nodes = new ArrayList<FileEntity>();
-        for (FileTreeNode child : fileService.ls(path)) {
-            FileEntity fileEntity = child.getFileEntity();
-            fileEntity.setPermissions("xwr--r---");
-            fileEntity.setSize("1000");
-            fileEntity.setOwn("root");
-            fileEntity.setGroup("root");
-            nodes.add(fileEntity);
+        if(fileService.ls(path) == null){
+            Map<String, Object> ret = new HashMap<>();
+            ret.put("ret", "success");
+            ret.put("data", nodes);
+            return JsonUtil.toJson(ret);
+        } else {
+            for (FileTreeNode child : fileService.ls(path)) {
+                FileEntity fileEntity = child.getFileEntity();
+                fileEntity.setPermissions("xwr--r---");
+                fileEntity.setSize("1000");
+                fileEntity.setOwn("root");
+                fileEntity.setGroup("root");
+                nodes.add(fileEntity);
+                System.out.println("前端返回结果="+fileEntity.getId());
+
+            }
         }
+
         Map<String, Object> ret = new HashMap<>();
         ret.put("ret", "success");
         ret.put("data", nodes);

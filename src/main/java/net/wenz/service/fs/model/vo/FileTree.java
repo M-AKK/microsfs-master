@@ -144,17 +144,17 @@ public class FileTree {
             fnode = this.getFilerOrDirectory(path);
 
         //#TODO campare size and children num
-        System.out.println("估计是根目录的id："+fnode.getFileEntity().getId());
+        //System.out.println("估计是根目录的id："+fnode.getFileEntity().getId());
         List<FileEntity> children = fileDao.getFilesInDirectory(fnode.getFileEntity().getId());
 
         for (FileEntity ent : children) {
-            System.out.println(ent.getAlias());
-            if (!fnode.hasChildNode(ent.getAlias())) {
-                FileTreeNode child = new FileTreeNode(ent, fnode);
-                fnode.putChildNode(child);
-
-                this.filePathCache.put(path + Constant.FILE_SEPARATE + ent.getAlias(), child);
-            }
+            //System.out.println(ent.getFileType().getValue());
+                if (!fnode.hasChildNode(ent.getAlias())) {
+                    FileTreeNode child = new FileTreeNode(ent, fnode);
+                    fnode.putChildNode(child);
+                    System.out.println("后台查询结果"+ent.getId());
+                    this.filePathCache.put(path + Constant.FILE_SEPARATE + ent.getAlias(), child);
+                }
         }
         return fnode.getAllChildNodes();
     }
@@ -200,14 +200,19 @@ public class FileTree {
             throw new PathException(String.format("File path donot should end with '%s'", Constant.FILE_SEPARATE));
 
         String[] _path = this._splitePathName(path);
+        StringBuffer _path1 = new StringBuffer();
+        for(int i=0; i<_path.length; i++){
+            _path1.append(_path[i]);
+        }
+        System.out.println("插入文件时候的目录"+_path1);
         // get parent node
-        FileTreeNode parent = this.getFilerOrDirectory(_path[0]);
+        FileTreeNode parent = this.getFilerOrDirectory(_path1.toString());
 
         // create file entity
         FileEntity ent = new FileEntity();
         ent.setId(UUID.randomUUID().toString().replaceAll("-", ""));
         ent.setName(name);
-        ent.setAlias(_path[1]);
+        ent.setAlias(name);//_path[1]
         ent.setFileType(FileType.FILE);
         ent.setParentId(parent.getFileEntity().getId());
         ent.setCreateTime(new Date());
