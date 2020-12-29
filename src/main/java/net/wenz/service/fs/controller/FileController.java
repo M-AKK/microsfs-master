@@ -129,7 +129,6 @@ public class FileController {
                 fileEntity.setGroup("root");
                 nodes.add(fileEntity);
                 System.out.println("前端返回结果="+fileEntity.getId());
-
             }
         }
 
