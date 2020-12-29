@@ -104,6 +104,7 @@ public class FileServiceImpl implements FileService {
         String fid = null;
         try {
             fid = fs.addFile(path,name);
+            System.out.println("插入时返回fid="+fid);
         } catch (FileTreeNodeNullException e) {
             e.printStackTrace();
         } catch (PathException e) {

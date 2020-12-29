@@ -8,6 +8,7 @@ import net.wenz.service.fs.model.dao.FileDao;
 import net.wenz.service.fs.model.entity.FileBlock;
 import net.wenz.service.fs.model.entity.FileEntity;
 import net.wenz.service.fs.exception.PathException;
+import net.wenz.service.fs.utils.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -85,8 +86,8 @@ public class FileTree {
      */
     public FileTreeNode getFilerOrDirectory(String path) throws PathException, FileTreeNodeNullException {
         // get file node from cache
-        if (this.filePathCache.containsKey(path))
-            return this.filePathCache.get(path);
+        /*if (this.filePathCache.containsKey(path))
+            return this.filePathCache.get(path);*/
 
         // get file node from DB
         String _path = this._normalPath(path);
@@ -135,24 +136,27 @@ public class FileTree {
      */
     public Collection<FileTreeNode> listDirectory(String path) throws PathException, FileTreeNodeNullException {
         path = this._normalPath(path);//调整下格式
-
+        System.out.println("fs/get传过来的path="+path);
         // get file node from cache or db
         FileTreeNode fnode = null;
-        if (this.filePathCache.containsKey(path))
+        /*if (this.filePathCache.containsKey(path))
             fnode = filePathCache.get(path);
-        else
+        else*/
             fnode = this.getFilerOrDirectory(path);
-
+        System.out.println("这里是fnode："+fnode.getFileEntity().getId());
         //#TODO campare size and children num
         //System.out.println("估计是根目录的id："+fnode.getFileEntity().getId());
-        List<FileEntity> children = fileDao.getFilesInDirectory(fnode.getFileEntity().getId());
+        //查找父节点下的子节点
+        List<FileEntity> children = new LinkedList<>();
+
+        children = fileDao.getFilesInDirectory(fnode.getFileEntity().getId());
 
         for (FileEntity ent : children) {
             //System.out.println(ent.getFileType().getValue());
                 if (!fnode.hasChildNode(ent.getAlias())) {
                     FileTreeNode child = new FileTreeNode(ent, fnode);
                     fnode.putChildNode(child);
-                    System.out.println("后台查询结果"+ent.getId());
+                    //System.out.println("后台查询结果"+ent.getId());
                     this.filePathCache.put(path + Constant.FILE_SEPARATE + ent.getAlias(), child);
                 }
         }
@@ -204,7 +208,7 @@ public class FileTree {
         for(int i=0; i<_path.length; i++){
             _path1.append(_path[i]);
         }
-        System.out.println("插入文件时候的目录"+_path1);
+        //System.out.println("插入文件时候的目录"+_path1);
         // get parent node
         FileTreeNode parent = this.getFilerOrDirectory(_path1.toString());
 
@@ -224,7 +228,8 @@ public class FileTree {
         parent.putChildNode(child);
 
         this.filePathCache.put(path, child);
-        return ent.getId();
+        System.out.println("插入时原先id"+ent.getId());
+        return ent.getParentId();
     }
 
     public void removeDirectory(String path) throws FileTreeNodeNullException, PathException, DirectoryDontEmptyException {

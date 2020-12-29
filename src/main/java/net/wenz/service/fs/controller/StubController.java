@@ -93,5 +93,4 @@ public class StubController {
         ret.put("ret", "success");
         return JsonUtil.toJson(ret);
     }
-
 }

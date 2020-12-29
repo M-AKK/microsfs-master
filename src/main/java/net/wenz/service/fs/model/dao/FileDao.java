@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper
 @Repository
 public interface FileDao {
-    List<FileEntity> getFilesInDirectory(@Param("parent") String parent);
+    List<FileEntity> getFilesInDirectory(@Param("parent") String parent);//查找父节点下的子节点
     FileEntity getFileById(@Param("id") String id);
     FileBlock getBlockByFid(@Param("fid") String fid);
     FileBlock getBlockById(@Param("id") String id);
