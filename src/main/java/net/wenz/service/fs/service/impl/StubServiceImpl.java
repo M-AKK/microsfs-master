@@ -93,12 +93,15 @@ public class StubServiceImpl implements StubService {
         List<FileBlock> blockinfos = filenode.getFileEntity().getBlocks();
 
         List<File> blocks = new ArrayList<File>();
+        String ip = "172.17.0.82";
+        String port = "9096";
+        String id = "aea358cde001cd7d4961f9c1918c6929";
         for (FileBlock info : blockinfos) {
             FileDuplicate duplicate = info.getDuplicates().get(0);
             String url = String.format("http://%s:%d/fs/get?blockid=%s",
-                    duplicate.getDataNode().getIp(),
-                    duplicate.getDataNode().getPort(),
-                    duplicate.getId());
+                    ip,
+                    port,
+                    id);
 
             RestTemplate restTemplate = new RestTemplate();
 

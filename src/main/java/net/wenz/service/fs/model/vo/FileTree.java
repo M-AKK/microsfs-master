@@ -136,7 +136,7 @@ public class FileTree {
      */
     public Collection<FileTreeNode> listDirectory(String path) throws PathException, FileTreeNodeNullException {
         path = this._normalPath(path);//调整下格式
-        System.out.println("fs/get传过来的path="+path);
+        //System.out.println("fs/get传过来的path="+path);
         // get file node from cache or db
         FileTreeNode fnode = null;
         /*if (this.filePathCache.containsKey(path))
